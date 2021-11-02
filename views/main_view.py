@@ -40,3 +40,29 @@ def register():
             return redirect(url_for('main.home'))
         else:
             return "이미 가입된 아이디입니다."
+
+@bp.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        id          = request.form['user_id']
+        password    = request.form['password']
+
+        user_data = rabbitUser.query.filter_by(id=id).first()
+
+        if not user_data:
+            return "없는 아이디입니다."
+        elif password != user_data.password:
+            return "비밀번호가 틀렸습니다."
+        else:
+            session.clear()
+            session['user_id'] = id
+            session['nickname'] = user_data.nickname
+
+            return "로그인 성공"
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('main.home'))

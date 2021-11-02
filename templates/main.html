@@ -7,3 +7,9 @@
 {% else %}
     <p>가게가 없어요...</p>
 {% endif %}
+
+{% if session['user_id'] %}
+    <p>안녕하세요, {{ session['nickname'] }} 님!</p>
+{% else %}
+    <p>로그인 되지 않았습니다.</p>
+{% endif %}
