@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block page_content %}
 {% if store_list %}
     <ul>
     {% for store in store_list %}
@@ -13,3 +16,4 @@
 {% else %}
     <p>로그인 되지 않았습니다.</p>
 {% endif %}
+{% endblock %}
