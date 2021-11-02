@@ -1,0 +1,9 @@
+{% if store_list %}
+    <ul>
+    {% for store in store_list %}
+        <li>{{ store.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>가게가 없어요...</p>
+{% endif %}
