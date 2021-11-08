@@ -19,14 +19,6 @@ class rabbitUser(db.Model):
     telephone   = db.Column(db.String(11))
     rank        = db.Column(db.Integer)
 
-    def __init__(self, id, password, nickname, telephone):
-        self.id         = id
-        self.password   = password
-        self.nickname   = nickname
-        self.telephone  = telephone
-        self.point      = 0
-        self.rank       = 0
-
 
 class rabbitStore(db.Model):
     

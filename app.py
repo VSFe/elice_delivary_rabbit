@@ -13,10 +13,11 @@ def create_app():
     db.init_app(app) # SQLAlchemy 객체를 app 객체와 이어줍니다.
     Migrate().init_app(app, db)
 
-    from views import main_view, store_detail_view
+    from views import main_view, store_detail_view, oauth
     from models import models
     app.register_blueprint(main_view.bp)
     app.register_blueprint(store_detail_view.bp)
+    app.register_blueprint(oauth.bp)
 
     app.secret_key = "seeeeeeeeeeeecret"
     app.config['SESSION_TYPE'] = 'filesystem'

@@ -11,5 +11,6 @@
             <input class="form-control" name="password" type="password" placeholder="비밀번호 입력">
         </div>
         <input class="btn btn-primary" type="submit" value="로그인!">
+        <a href="{{ url_for('kakao.kakao_sign_in') }}"><img src="../static/kakao_login_medium_narrow.png" /></a>
     </form>
 {% endblock %}
