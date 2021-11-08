@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}회원 정보 수정{% endblock %}
+
+{% block page_content %}    
+    {% if user_info %}
+        <form action="{{ url_for('main.update_info') }}" method="post">
+            <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input class="form-control" name="nickname" type="nickname" placeholder="닉네임 입력">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호 확인 (개인정보를 수정하기 위해선 비밀번호를 입력해야 합니다.)</label>
+                <input class="form-control" name="password" type="password" placeholder="비밀번호 입력">
+            </div>
+            <input class="btn btn-primary" type="submit" value="로그인!">
+        </form>
+    {% endif %}
+{% endblock %}

@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 
-{% block page_content %}
-{% if store_list %}
-    <ul>
-    {% for store in store_list %}
-        <li>{{ store.name }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>가게가 없어요...</p>
-{% endif %}
+{% block title %}메인 페이지{% endblock %}
 
-{% if session['user_id'] %}
-    <p>안녕하세요, {{ session['nickname'] }} 님!</p>
-{% else %}
-    <p>로그인 되지 않았습니다.</p>
-{% endif %}
+{% block page_content %}    
+    {% if store_list %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="list-group">
+                    {% for store in store_list%}
+                        <a href="/store/{{ store.id }}"><li class="list-group-item list-group-item-action">{{ store.name }}</li></a>
+                    {% endfor %}
+                </ul>                
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>가게가 없어요...</p>
+    {% endif %}
 {% endblock %}

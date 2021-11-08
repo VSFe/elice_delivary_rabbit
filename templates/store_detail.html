@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+    {% if store_info %}
+        <table class="table table-hover table-condensed table-bordered">
+            <tbody>
+                <tr>
+                    <th>가게 이름</th>
+                    <th>{{ store_info.name }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>가게 위치</th>
+                    <th>{{ store_info.location }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>가게 번호</th>
+                    <th>{{ store_info.telephone }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>가게 별점</th>
+                    <th>{{ store_info.rating }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>여는 시간</th>
+                    <th>{{ store_info.open_time }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>닫는 시간</th>
+                    <th>{{ store_info.close_time }}</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>찜</th>
+                    <th>{{ store_info.stars }}</th>
+                </tr>
+            </tbody>
+        </table>
+        <hr/>
+
+        {% if store_menu %}
+            <h3>메뉴</h3>
+            <ul>
+            {% for menu in store_menu %}
+                <li>{{ menu.food_name }} ({{ menu.price }} 원, {{ menu.description }})</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h3>리뷰</h3>
+        <h5>현재 {{ review_info|length }} 개의 리뷰가 있습니다.(평균: {{ avg }})</h5>
+        {% for review in review_info %}
+            <div>
+                <!-- 리뷰가 3.0점 이상이라면 파란색을, 아니라면 빨간색을 표시함.-->
+                {% if review.rating >= 3 %}
+                    <p>
+                        <span style="color: blue">{{ review.rating }}</span> {{review.content}}
+                        {% if session['user_id'] == review.user_id %}
+                            <a class="btn btn-danger btn-sm" href="{{ url_for('main.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p>
+                        <span style="color: red">{{ review.rating }}</span> {{review.content}}
+                        {% if session['user_id'] == review.user_id %}
+                            <a class="btn btn-danger btn-sm" href="{{ url_for('main.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
+                        {% endif %}
+                    </p>
+                {% endif %}
+                
+            </div>
+        {% endfor %}
+    
+        <hr>
+        {% if session['user_id'] %}
+        <h3>리뷰 작성</h3>
+        <form action="{{ url_for('main.create_review', store_id=store_info.id) }}" method="post">
+            <select name="star">
+                <option value="1">1점</option>
+                <option value="2">2점</option>
+                <option value="3">3점</option>
+                <option value="4">4점</option>
+                <option value="5">5점</option>
+            </select>
+            <div class="form-group">
+                <label for="review">리뷰</label>
+                <input class="form-control" name="review" id="review" placeholder="리뷰를 작성해주세요."></input> 
+            </div>
+            <input class="btn btn-primary" type="submit" value="리뷰 올리기">
+        </form>
+        {% endif %}
+    {% endif %}
+    
+{% endblock %}
