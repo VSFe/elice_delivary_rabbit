@@ -66,14 +66,14 @@
                     <p>
                         <span style="color: blue">{{ review.rating }}</span> {{review.content}}
                         {% if session['user_id'] == review.user_id %}
-                            <a class="btn btn-danger btn-sm" href="{{ url_for('main.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
+                            <a class="btn btn-danger btn-sm" href="{{ url_for('store_detail.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
                         {% endif %}
                     </p>
                 {% else %}
                     <p>
                         <span style="color: red">{{ review.rating }}</span> {{review.content}}
                         {% if session['user_id'] == review.user_id %}
-                            <a class="btn btn-danger btn-sm" href="{{ url_for('main.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
+                            <a class="btn btn-danger btn-sm" href="{{ url_for('store_detail.delete_review', store_id=store_info.id, review_id=review.id) }}">삭제</a>                            </a>
                         {% endif %}
                     </p>
                 {% endif %}
@@ -84,7 +84,7 @@
         <hr>
         {% if session['user_id'] %}
         <h3>리뷰 작성</h3>
-        <form action="{{ url_for('main.create_review', store_id=store_info.id) }}" method="post">
+        <form action="{{ url_for('store_detail.create_review', store_id=store_info.id) }}" method="post">
             <select name="star">
                 <option value="1">1점</option>
                 <option value="2">2점</option>
