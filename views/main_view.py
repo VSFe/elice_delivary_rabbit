@@ -12,7 +12,7 @@ ORM을 통해 간접적으로 db에 작업 명령을 내릴 수 있습니다.
 '''
 
 
-from flask import Blueprint, render_template, request, url_for, session, redirect
+from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from models.models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -38,10 +38,19 @@ def register():
         
             db.session.add(user)
             db.session.commit()
+            
+            #flash를 하면 바로 띄우느것이 아니라 render_template이 될때까지 쌓임. 리스트로 저장되어있음!
+            flash("회원가입이 완료되었습니다")
 
-            return redirect(url_for('main.home'))
+            return redirect(url_for('main.home')) #main = blueprint 지정한 name
         else:
-            return "이미 가입된 아이디입니다."
+            flash("이미 가입된 아이디입니다.")
+            return redirect(url_for('main.register'))
+
+#render template -> 페이지 주소는 안 바뀌는데 그냥 html만 띄우는거
+#redirect -> 페이지 주소까지 바꿔버리는거
+#POST -> 일반적으로 페이지를 띄으지 않는다 -> 즉, redirect로 보내는게 맞음
+#GET인데도 다른 페이지를 띄워야 할 피료악 있다면 redirect로 보내는게 맞음
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -54,15 +63,18 @@ def login():
         user_data = rabbitUser.query.filter_by(id=id).first()
 
         if not user_data:
-            return "없는 아이디입니다."
+            flash("없는 아이디입니다.")
+            return redirect(url_for('main.login'))
         elif not check_password_hash(user_data.password, password):
-            return "비밀번호가 틀렸습니다."
+            flash("비밀번호가 틀렸습니다.") 
+            return redirect(url_for('main.login'))
         else:
             session.clear()
             session['user_id'] = id
             session['nickname'] = user_data.nickname
 
-            return "로그인 성공"
+            flash(f"{user_data.nickname}님, 환영합니다!")
+            return redirect(url_for('main.home'))
 
 @bp.route('/logout')
 def logout():
