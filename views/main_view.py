@@ -14,6 +14,7 @@ ORM을 통해 간접적으로 db에 작업 명령을 내릴 수 있습니다.
 
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from models.models import *
+from werkzeug.security import generate_password_hash, check_password_hash
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -31,7 +32,8 @@ def register():
         # 만약에 같은 아이디가 있으면 어떡해?
         user = rabbitUser.query.filter_by(id=request.form['user_id']).first()
         if not user:
-            user = rabbitUser(id=request.form['user_id'], password=request.form['password'],
+            password = generate_password_hash(request.form['password']) #비밀번호 암호화!
+            user = rabbitUser(id=request.form['user_id'], password=password,
             nickname=request.form['nickname'], telephone=request.form['telephone'])
         
             db.session.add(user)
@@ -53,7 +55,7 @@ def login():
 
         if not user_data:
             return "없는 아이디입니다."
-        elif password != user_data.password:
+        elif not check_password_hash(user_data.password, password):
             return "비밀번호가 틀렸습니다."
         else:
             session.clear()
